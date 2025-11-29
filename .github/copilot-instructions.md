@@ -36,7 +36,7 @@ Integration and constraints
 
 Project-specific conventions
 - Keep functionality in `src/extension.ts` for this small project.
-- Use an `OutputChannel` named `Mass Breakpoint` for logging and debugging (useful in Extension Host runs).
+- Use an `OutputChannel` named `Mass Breakpoint` for logging and debugging (useful in Extension Host runs). Logging is disabled by default; when disabled the output channel is not created. Toggle via `massBreakpoint.enableLogging`.
 - Store extension-added state in `context.workspaceState` and keep keys lightweight (`uri:line:char`).
 
 Potential improvements & tips for copilot agents

@@ -8,16 +8,39 @@ function makeKey(uri: vscode.Uri, line: number, char: number) {
 }
 
 export function activate(context: vscode.ExtensionContext) {
-    const output = vscode.window.createOutputChannel(OUTPUT_CHANNEL_NAME);
-    context.subscriptions.push(output);
+    let output: vscode.OutputChannel | undefined = undefined;
+    // Helper: create the output channel lazily when logging is enabled
+    function ensureOutputChannel() {
+        const enabled = vscode.workspace.getConfiguration('massBreakpoint').get<boolean>('enableLogging', false);
+        if (!enabled) return;
+        if (!output) {
+            output = vscode.window.createOutputChannel(OUTPUT_CHANNEL_NAME);
+            context.subscriptions.push(output);
+        }
+    }
 
     // Helper to write to the output channel only when logging is enabled
     function log(message: string) {
-        const enabled = vscode.workspace.getConfiguration('massBreakpoint').get<boolean>('enableLogging', true);
-        if (enabled) {
-            output.appendLine(message);
-        }
+        const enabled = vscode.workspace.getConfiguration('massBreakpoint').get<boolean>('enableLogging', false);
+        if (!enabled) return;
+        ensureOutputChannel();
+        output?.appendLine(message);
     }
+
+    // Listen for config changes to toggle output channel lifecycle
+    const configWatcher = vscode.workspace.onDidChangeConfiguration(e => {
+        if (e.affectsConfiguration('massBreakpoint.enableLogging')) {
+            const enabled = vscode.workspace.getConfiguration('massBreakpoint').get<boolean>('enableLogging', false);
+            if (!enabled && output) {
+                output.dispose();
+                // remove from subscriptions if present, but context.subscriptions doesn't support remove — it's ok to leave disposed instance
+                output = undefined;
+            } else if (enabled && !output) {
+                ensureOutputChannel();
+            }
+        }
+    });
+    context.subscriptions.push(configWatcher);
 
     log('Mass Breakpoint extension activated.');
 
