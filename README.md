@@ -11,6 +11,7 @@ Notes and Implementation Details
 - It stores added breakpoints specific to this extension in the workspace state (`massBreakpoint.addedBreakpoints`).
 - To avoid accidentally adding many breakpoints, a limit is configurable via `massBreakpoint.maxBreakpoints` — default 250.
 - The extension logs to an output channel named `Mass Breakpoint` with an initial 'activated' message.
+- The extension logs to an output channel named `Mass Breakpoint` with an initial 'activated' message. Logging can be disabled via the `massBreakpoint.enableLogging` setting (default: true).
 - The extension attempts to contribute a menu entry to the References view, but not all built-in views expose consistent context keys across versions — the commands always work from the command palette and editor context menu.
 
 Usage

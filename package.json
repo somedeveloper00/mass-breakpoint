@@ -76,6 +76,12 @@
           "default": 250,
           "description": "Maximum number of breakpoints that will be added by the mass breakpoints command."
         }
+        ,
+        "massBreakpoint.enableLogging": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable or disable output logging to the 'Mass Breakpoint' output channel."
+        }
       }
     }
   }
