@@ -1,4 +1,5 @@
 # Mass Breakpoint
+![Mass Breakpoint Icon](images/icon.png)
 
 Small VS Code extension to add/remove breakpoints for all reference results of the symbol under the cursor. Useful when you want to debug all call sites or usages.
 
@@ -30,3 +31,17 @@ Developer / Example
 Testing and Debugging
 - Run `npm install` then `npm run compile` to build.
 - Use `Run -> Start Debugging (F5)` in VS Code to run the extension in a new Extension Development Host; then open a workspace with TypeScript/JavaScript code and try the command.
+
+日本語 (Japanese)
+- 概要: カーソル下のシンボルに対するすべての参照結果にブレークポイントを一括で追加/削除する小さな VS Code 拡張です。
+- コマンド:
+	- `Mass Breakpoint: Set breakpoints for all References` — カーソル位置のシンボル参照を収集し、各ユニーク位置にブレークポイントを追加します。
+	- `Mass Breakpoint: Clear breakpoints created from References` — 拡張が追加したブレークポイントをワークスペース状態から読み取り、削除します。
+- 注意事項:
+	- 参照取得には `vscode.executeReferenceProvider` を使用します。言語サーバーによっては参照が完全でない場合があります。
+	- 追加するブレークポイント数は `massBreakpoint.maxBreakpoints` で制限できます（デフォルト: 1000）。
+	- ログは `Mass Breakpoint` 出力チャネルに出ますが、`massBreakpoint.enableLogging` を `false` にすると出力チャネルは作成されません（デフォルト: `false`）。
+- 使い方:
+	1. ソースファイルを開き、シンボルにカーソルを置く。
+	2. コマンドパレットまたはエディタのコンテキストメニューから `Set breakpoints for all References` を実行。
+	3. 必要に応じて `Clear breakpoints created from References` で解除。
